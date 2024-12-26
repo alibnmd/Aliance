@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de recherche</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Ton fichier CSS principal -->
+</head>
+<body>
+    <header class="header">
+        <!-- Ton header ici -->
+    </header>
+    <main style="margin-top: 80px;">
+        <h1>Résultats pour "<span id="search-query"></span>"</h1>
+        <div id="results"></div>
+    </main>
+    <script>
+        // Récupérer la requête depuis l'URL
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('query');
+        const resultsContainer = document.getElementById('results');
+        const searchQuerySpan = document.getElementById('search-query');
+
+        searchQuerySpan.textContent = query || "aucun mot-clé";
+
+        // Exemple d'articles
+        const articles = [
+            "Aliance travaille sur des projets innovants comme Blue Bloom.",
+            "Glow & Know partage des actualités sur la mode et la skincare.",
+            "Notre projet secret sera révélé bientôt. Restez connectés !"
+        ];
+
+        // Filtrer les articles contenant le mot-clé
+        const results = articles.filter(article => article.toLowerCase().includes(query?.toLowerCase()));
+
+        if (results.length === 0) {
+            const noResultDiv = document.createElement('div');
+            noResultDiv.textContent = "Aucun résultat trouvé.";
+            noResultDiv.style.color = "red";
+            resultsContainer.appendChild(noResultDiv);
+        } else {
+            results.forEach(result => {
+                const highlighted = result.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #007BFF; color: #fff;">${match}</span>`);
+                const resultDiv = document.createElement('div');
+                resultDiv.innerHTML = highlighted;
+                resultsContainer.appendChild(resultDiv);
+            });
+        }
+    </script>
+</body>
+</html>
